@@ -1,0 +1,83 @@
+ @layout('layout/auth/main') 
+ @section('content') 
+
+<script src="http://www.w3school.com.cn/jquery/jquery.js"></script>
+ <script>
+ $(function () {
+     //選擇門市後 用ajax帶出該時段的time_id是多少
+     $("#select_time").change(function () {
+         $.ajax({
+             url: "/AudreySP/givemetimeid",
+             type: "GET",
+             data: {
+                 store_name: $('#select_time :selected').text(),
+             },
+             //client將選擇的店櫃傳給server ，server再將該店櫃的時段傳給client
+             success: function (data) {
+                 //client接收到server回傳的時段id 
+                 $("#in_time_id").val(data[0].id)
+             },
+             error: function () {
+                 alert('請重新整理');
+             }
+         });
+     });
+
+ })
+ </script>
+
+ <div style="height:50px"></div>
+
+
+<div class="container">
+<form action="/AudreySP/addStore/" method="POST" id="addform">
+    {{ csrfField() }} 
+    {{-- 選擇門市區域 --}}
+    <div class="form-group">
+        <label>請選擇區域:</label>
+        <select multiple class="form-control" id="select_area" name="store_area">
+            @each(area in store_area)
+            <option>{{area.store_area}}</option>
+            @endeach
+        </select>
+    </div>
+
+    {{-- 填入店櫃名稱 --}}
+    <div class="form-group">
+        <label>請填入店櫃名稱:</label>
+        <input type="text" class="form-control" name="store_name" id="in_store_name" placeholder="範例:EASY SHOP 台北士東店">
+    </div>
+    {{-- 填入店櫃地址 --}}
+    <div class="form-group">
+        <label>請填入店櫃地址:</label>
+        <input type="text" class="form-control" name="sotre_address" id="in_store_address" placeholder="範例:台北市士林區士東路93號">
+    </div>
+    {{-- 填入店櫃電話 --}}
+    <div class="form-group">
+        <label>請填入店櫃電話:</label>
+        <input type="text" class="form-control" name="store_phone" id="in_store_phone" placeholder="範例:02-28730169">
+    </div>
+    {{-- 選擇門市時段 --}}
+    <div class="form-group">
+        <label>請選擇時段:</label>
+        <select multiple class="form-control" id="select_time" name="can_reserve_time">
+            @each(time in reserve_time)
+            <option>{{time.can_reserve_time}}</option>
+            @endeach
+        </select>
+    </div>
+    {{--  選完門市時段後自動帶出的時段id  --}}
+    <div class="form-group">
+        <label>Time_ID:</label>
+        <input type="number" class="form-control" name="time_id" id="in_time_id" placeholder="範例:910512">
+    </div>
+    {{-- 填入店櫃編號 --}}
+    <div class="form-group">
+        <label>請填入店櫃編號:</label>
+        <input type="number" class="form-control" name="store_num" id="in_store_num" placeholder="範例:910512">
+    </div>
+
+    <button type="submit" class="btn btn-outline-success">送出</button>
+</form>
+</div>
+ @endsection

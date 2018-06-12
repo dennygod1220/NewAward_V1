@@ -1,0 +1,48 @@
+ @layout('layout/auth/main') 
+ @section('content') 
+ @if(old('notification'))
+    <div class="alert alert-danger">
+        {{ old('notification') }}
+    </div>
+@endif
+ @if(old('notificationSU'))
+    <div class="alert alert-success">
+        {{ old('notificationSU') }}
+    </div>
+@endif
+ <div style="height:50px"></div>
+<a href="/AudreySP/addStore" class="btn btn-outline-info">新增店櫃</a>
+ <div style="height:50px"></div>
+ 
+    <table class="table table-bordered table-hover " style="text-align:center;" id="tbl">
+  <thead class="thead-dark">
+    <tr>
+    <th scope="col">id</th>
+    <th scope="col">店櫃區域</th>
+    <th scope="col">店櫃名稱</th>
+    <th scope="col">店櫃地址</th>
+    <th scope="col">店櫃電話</th>
+    <th scope="col">可預約時段</th>
+    <th scope="col">店櫃編號</th>
+    <th scope="col"></th>
+    
+    </tr>
+  </thead>
+  <tbody>
+    @each(storeinfo in storeinfo)
+    <tr>
+      <td>{{storeinfo.id}}</td>
+      <td>{{storeinfo.store_area}}</td>
+      <td>{{storeinfo.store_name}}</td>
+      <td>{{storeinfo.sotre_address}}</td>
+      <td>{{storeinfo.store_phone}}</td>
+      <td>{{storeinfo.can_reserve_time}}</td>
+      <td>{{storeinfo.store_num}}</td>
+
+      <td><a href="/AudreySP/addStoreindex/delete/{{storeinfo.id}}" class="btn btn-outline-danger">刪除</a> </td>
+    </tr>
+    @endeach
+  </tbody>
+</table>
+
+ @endsection
